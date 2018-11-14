@@ -1,0 +1,130 @@
+﻿@model IEnumerable<DataAccessLayer.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts {
+
+	<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<script src="~/Scripts/jquery.table2excel.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#fromDate").datepicker();
+			$("#toDate").datepicker();
+		});
+
+		function exportReleaseItemsToExcel() {
+			$(function () {
+				$("#_expoertToExcel").table2excel({
+					exclude: ".noExl",
+					name: "Order List",
+					filename: "OrderList" + new Date().toISOString().replace(/[\-\:\.]/g, ""),
+					fileext: ".xls",
+					exclude_img: true,
+					exclude_links: true,
+					exclude_inputs: true
+				});
+			});
+		}
+
+	</script>
+
+	<script type="text/javascript">
+		$(function () {
+			$('.popup-link').click(function () {
+				var href = $(this).attr('href');
+				$('<div><p class="popup-content"></p></div>').dialog({
+					autoOpen: true,
+					width: 1000,
+					height: 600,
+					title: "Order",
+					open: function () {
+						$(this).find('.popup-content').load(href);
+					},
+					buttons: {
+						"Close": function () {
+							$(this).dialog("close");
+						}
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+
+}
+<style>
+	td {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+</style>
+
+<div id="PopUpDashBordResult"></div>
+
+<h2>Product List</h2>
+
+<p>
+   
+</p>
+<li class="btn btn-default">
+	@Html.ActionLink("Create New", "Create")
+</li>
+<br />
+<br />
+<table  class="table table-bordered">
+    <tr>
+        <th>
+            Product Name
+        </th>
+        <th>
+           Created Date
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+			Edit Product
+		</th>
+		<th>
+			Product Details
+		</th>
+		<th>
+			Delete Product
+		</th>
+    </tr>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateLooged)
+        </td>
+        <td>
+			@Html.CheckBoxFor(modelItem => item.IsActive.HasValue, new { @checked = "checked" })
+        </td>
+        <td>
+			<li class="btn btn-default">
+				@Html.ActionLink("Edit", "Edit", new { id = item.ID })
+			</li>
+          </td>
+		<td>
+			<li class="btn btn-default">
+				@Html.ActionLink("Details", "Details", new { id = item.ID })
+			</li>
+         </td>
+		<td>
+			<li class="btn btn-default">
+				@Html.ActionLink("Delete", "Delete", new { id = item.ID })
+			</li>
+        </td>
+    </tr>
+}
+
+</table>

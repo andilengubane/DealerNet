@@ -1,0 +1,178 @@
+﻿@model IEnumerable<DataAccessLayer.Order>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts {
+
+	<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<script src="~/Scripts/jquery.table2excel.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#fromDate").datepicker();
+			$("#toDate").datepicker();
+		});
+
+		function exportReleaseItemsToExcel() {
+			$(function () {
+				$("#_expoertToExcel").table2excel({
+					exclude: ".noExl",
+					name: "Order List",
+					filename: "OrderList" + new Date().toISOString().replace(/[\-\:\.]/g, ""),
+					fileext: ".xls",
+					exclude_img: true,
+					exclude_links: true,
+					exclude_inputs: true
+				});
+			});
+		}
+
+	</script>
+
+	<script type="text/javascript">
+		$(function () {
+			$('.popup-link').click(function () {
+				var href = $(this).attr('href');
+				$('<div><p class="popup-content"></p></div>').dialog({
+					autoOpen: true,
+					width: 1000,
+					height: 600,
+					title: "Order",
+					open: function () {
+						$(this).find('.popup-content').load(href);
+					},
+					buttons: {
+						"Close": function () {
+							$(this).dialog("close");
+						}
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+
+		function Delete() {
+			debugger
+			var orderNumber = $("#orderNumber").val();
+			console.log("örder number ", orderNumber)
+		}
+
+	</script>
+}
+<style>
+	td {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+</style>
+
+<div id="PopUpDashBordResult"></div>
+
+<h2>Order List</h2>
+@using (Html.BeginForm())
+{
+	<table style="width: 100%; border-spacing: 0 1em;">
+		<tr>
+			<td style="width: 2%; text-align: center">
+				Start Date
+			</td>
+			<td style="width: 2%; text-align: center">
+				@Html.TextBox("fromDate", null, new { id = "fromDate", @class = "form-control", autocomplete = "off" })
+			</td>
+			<td style="width: 2%; text-align: center">
+				End Date
+			</td>
+			<td style="width: 2%; text-align: center">
+				@Html.TextBox("toDate", null, new { id = "toDate", @class = "form-control", autocomplete = "off" })
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 2%; text-align: center">
+				<input type="submit" value="Search" class="btn btn-default" />
+			</td>
+		</tr>
+	</table>
+}
+<br />
+
+<li class="btn btn-default">
+    @Html.ActionLink("Create New", "Create")
+</li>
+<br />
+<br />
+<table class="table table-bordered">
+	<tr>
+		<th>
+			OrderDate
+		</th>
+		<th>
+			Status
+		</th>
+		<th>
+			Description
+		</th>
+		<th>
+			Quantity
+		</th>
+		<th>
+			Total
+		</th>
+		<th>
+			Product
+		</th>
+		<th>
+			Edit Order
+		</th>
+		<th>
+			Order Details
+		</th>
+		<th>
+			Remove Order
+		</th>
+	</tr>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.Name)
+        </td>
+		<td>
+			<li class="btn btn-default">
+				@Html.ActionLink("Edit", "Edit", new { id = item.OrderNumber }, new { @class = "popup-link" }) 
+			</li>
+		</td>
+		<td>
+			<li class="btn btn-default">
+				@Html.ActionLink("Details", "Details", new { id = item.OrderNumber }, new { @class = "popup-link" })
+			</li>
+       </td>
+		<td>
+			<li class="btn btn-default">
+				@Html.ActionLink("Delete", "Delete", new { id = item.OrderNumber }, new { @class = "popup-link" })
+			</li>
+       </td>
+    </tr>
+}
+</table>

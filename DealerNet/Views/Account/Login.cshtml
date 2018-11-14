@@ -1,0 +1,120 @@
+﻿
+
+@using PublicWorks.Models
+@model UserModel
+
+@{
+	ViewBag.Title = "Log in";
+	Layout = null;
+	ViewBag.color = "red";
+}
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
+}
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+<style>
+	.back {
+		background: #e2e2e2;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+	}
+
+	.div-center {
+		width: 500px;
+		height: 400px;
+		background-color: #fff;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		max-width: 150%;
+		max-height: 100%;
+		overflow: auto;
+		padding: 1em 2em;
+		border-bottom: 2px solid #ccc;
+		display: table;
+	}
+
+	div.content {
+		display: table-cell;
+		vertical-align: middle;
+	}
+</style>
+<script type="text/javascript">
+
+    function openRegisterView() {
+        ajax({
+            type: 'GET',
+            url: "Register/Account",
+            success: function (view) {
+                }
+            });
+    }
+</script>
+<div class="back">
+	<div class="div-center">
+		<div class="content">
+
+			<section id="loginForm">
+				@using (Html.BeginForm("GetUserAccess", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+				{
+					<h2>@ViewBag.Title.</h2>
+					<hr />
+					@Html.AntiForgeryToken()
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					<div class="form-group">
+						@Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+						<div class="col-md-10">
+							@Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autocomplete = "off" })
+							@Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+						</div>
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+						<div class="col-md-10">
+							@Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+							@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							<div class="checkbox">
+								@*@Html.CheckBoxFor(m => m.RememberMe)
+									@Html.LabelFor(m => m.RememberMe)*@
+							</div>
+						</div>
+					</div>
+					<hr />
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							@Html.ActionLink("Recover Password", "RecoverPassword", "Account")
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							<input type="submit" value="Sign In" class="btn btn-default" />
+							&nbsp;&nbsp;&nbsp;
+							@Html.ActionLink("Sign Up", "Register", "Account", new { @class = "btn btn-default" })
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							<font color="@ViewBag.color">@ViewBag.ErroMessage</font>
+						</div>
+					</div>
+				}
+			</section>
+		</div>
+	</div>
+</div>

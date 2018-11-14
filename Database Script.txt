@@ -1,0 +1,105 @@
+USE [DealerNet]
+GO
+
+/****** Object:  Table [dbo].[DataLooKUp]    Script Date: 2018/09/03 08:24:26 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[DataLooKUp](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](50) NULL,
+	[DateLogged] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[DataLooKUp] ADD  DEFAULT (getdate()) FOR [DateLogged]
+GO
+
+CREATE TABLE [dbo].[Product](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[DateLooged] [datetime] NULL,
+	[IsActive] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[Product] ADD  DEFAULT (getdate()) FOR [DateLooged]
+GO
+
+CREATE TABLE [dbo].[Orders](
+	[OrderNumber] [int] IDENTITY(3,4) NOT NULL,
+	[CustomerID] [int] NULL,
+	[OrderDate] [datetime] NULL,
+	[Status] [varchar](50) NOT NULL,
+	[Description] [varchar](max) NULL,
+	[ItemCategory] [int] NULL,
+	[Quantity] [int] NULL,
+	[Total] [decimal](5, 2) NULL,
+	[Datelogged] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[OrderNumber] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[Orders] ADD  DEFAULT (getdate()) FOR [Datelogged]
+GO
+
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD FOREIGN KEY([CustomerID])
+REFERENCES [dbo].[Users] ([ID])
+GO
+
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD FOREIGN KEY([ItemCategory])
+REFERENCES [dbo].[Product] ([ID])
+GO
+
+CREATE TABLE [dbo].[Users](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](150) NOT NULL,
+	[LastName] [varchar](150) NOT NULL,
+	[EmailAddress] [varchar](200) NOT NULL,
+	[UserName] [varchar](150) NOT NULL,
+	[DateLogged] [datetime] NULL,
+	[Password] [varchar](150) NULL,
+	[ContactNumber] [varchar](20) NULL,
+	[IsActive] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[Users] ADD  DEFAULT (getdate()) FOR [DateLogged]
+GO

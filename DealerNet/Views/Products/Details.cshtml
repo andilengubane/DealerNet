@@ -1,0 +1,46 @@
+﻿@model DataAccessLayer.Product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div>
+    <h4>Product Details</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateLooged)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateLooged)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+           @Html.CheckBoxFor(model => model.IsActive.HasValue)
+        </dd>
+
+    </dl>
+</div>
+<p>
+	<li class="btn btn-default">
+		@Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+	</li>
+     
+	<li class="btn btn-default">
+		@Html.ActionLink("Back to List", "Index")
+	</li>
+</p>
